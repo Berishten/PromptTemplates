@@ -12,11 +12,7 @@ let templates = [];
 init();
 
 function init() {
-  //   addFirstPromptElement();
-  //   addPromptElement();
-
   loadMocks();
-
   loadTemplateList();
 }
 
@@ -27,27 +23,141 @@ function loadTemplateList() {
 }
 
 function loadMocks() {
-  mocks = [];
+  mocks = [
+    {
+      id: "template-0",
+      blocks: [
+        {
+          id: "template-block-0",
+          text: "Desde",
+          type: "prompt",
+        },
+        {
+          id: "template-block-1",
+          type: "argument",
+        },
+        {
+          id: "template-block-2",
+          text: "hasta",
+          type: "prompt",
+        },
+        {
+          id: "template-block-3",
+          type: "argument",
+        },
+      ],
+      name: "Distancia",
+    },
+    {
+      id: "template-1",
+      blocks: [
+        {
+          id: "template-block-0",
+          text: "Redacta un cuento con los siguientes generos",
+          type: "prompt",
+        },
+        {
+          id: "template-block-1",
+          type: "argument",
+        },
+        {
+          id: "template-block-2",
+          text: "y firma al final como",
+          type: "prompt",
+        },
+        {
+          id: "template-block-3",
+          type: "argument",
+        },
+      ],
+      name: "Redactor de cuentos",
+    },
+    {
+      id: "template-2",
+      blocks: [
+        {
+          id: "template-block-0",
+          text: "Toma esta tabla",
+          type: "prompt",
+        },
+        {
+          id: "template-block-1",
+          type: "argument",
+        },
+        {
+          id: "template-block-2",
+          text: "y genera un reporte de",
+          type: "prompt",
+        },
+        {
+          id: "template-block-3",
+          type: "argument",
+        },
+        {
+          id: "template-block-4",
+          text: "No agregar firma",
+          type: "prompt",
+        },
+      ],
+      name: "Generador de reportes",
+    },
+  ];
 
   templates = mocks;
 }
 
 function loadTemplate(id) {
-  let temp = templates.find((template) => template.id === id);
-  console.log(id, temp);
+  var div = document.getElementById("readonlyprompt");
+  div.innerHTML = "";
+  // hacer que el div con id "form" desaparezca
+  document.getElementById("form").style.display = "none";
+  //   hacer que el div con id "readonlyform" aparezca
+  document.getElementById("readonlyform").style.display = "block";
 
-  // set template name
+  let temp = templates.find((template) => template.id === id);
   document.getElementById("template-name").value = temp.name;
 
-  var div = document.getElementById("prompts");
-  div.innerHTML = "";
+  // create a title
+  var title = document.createElement("h1");
+  title.textContent = temp.name;
+  div.appendChild(title);
+  // agregar hr
+  var hr = document.createElement("hr");
+  hr.style.marginBottom = "20px";
+  div.appendChild(hr);
+
   temp.blocks.forEach((block) => {
     if (block.type === "prompt") {
-      loadPromptBlock(block);
+      createReadBlock(block);
     } else if (block.type === "argument") {
-      addArgumentElement();
+      createReadBlock(block, "argument");
     }
   });
+
+  //   var div = document.getElementById("prompts");
+  //   div.innerHTML = "";
+  //   temp.blocks.forEach((block) => {
+  //     if (block.type === "prompt") {
+  //       loadPromptBlock(block);
+  //     } else if (block.type === "argument") {
+  //       addArgumentElement();
+  //     }
+  //   });
+}
+
+function createReadBlock(block, type = "prompt") {
+  var div = document.getElementById("readonlyprompt");
+  var blockElement;
+  if (type !== "prompt") {
+    blockElement = document.createElement("input");
+    blockElement.textContent = "Argumento";
+    blockElement.className = "badge argument-badge";
+  } else {
+    blockElement = document.createElement("span");
+    blockElement.textContent = block.text;
+    blockElement.className = "badge prompt-badge";
+  }
+  div.appendChild(blockElement);
 }
 
 function loadPromptBlock(block) {
@@ -99,11 +209,14 @@ function addPromptElement() {
 }
 
 function saveTemplate() {
-  template.name = template_name;
-  template.blocks[0].text = document.getElementById(
-    prompt_block_name + "0"
-  ).value;
-  template.blocks[0].id = prompt_block_name + "0";
+  //   get each prompt block and add to the template object
+  template.blocks.forEach((block) => {
+    if (block.type === "prompt") {
+      block.text = document.getElementById(block.id).value;
+    }
+  });
+
+  template.name = document.getElementById("template-name").value;
   template.id = template_name + templates.length;
   createTemplateListElement(template);
   templates.push(template);
@@ -119,4 +232,19 @@ function createTemplateListElement(template) {
   li.className = "template-item-list";
   li.textContent = template.name;
   ul.appendChild(li);
+}
+
+// esta funcion toma un string y hace una peticion a "localhost:3000/gpt", cuando recibe la respuesta la imprime en el elemento con id "output"
+function generate(text) {
+  fetch("http://localhost:3000/gpt", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ text }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      document.getElementById("output").innerHTML = data.text;
+    });
 }

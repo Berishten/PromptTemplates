@@ -14,13 +14,21 @@
 /* Zona de la izquierda */
 .left-side {
   background-color: lightgray;
-  width: 30%;
+  width: 20%;
   padding: 20px;
 }
 
-/* Formulario de la derecha */
+/* Formulario central */
+.center-side {
+  background-color: #f1f1f1;
+  width: 50%;
+  padding: 20px;
+}
+
+/* Zona de la derecha */
 .right-side {
-  width: 70%;
+  background-color: lightgray;
+  width: 30%;
   padding: 20px;
 }
 
@@ -45,13 +53,22 @@ button {
   justify-content: space-between;
 }
 
-/* es un span con fondo celeste claro, redondeado elegante */
-.label-badge {
-  background-color: #2434be;
+.badge {
   color: white;
   border-radius: 5px;
   padding: 5px;
   margin-right: 10px;
+  margin-bottom: 10px;
+
+}
+
+/* es un span con fondo celeste claro, redondeado elegante */
+.argument-badge {
+  background-color: #4956cf;
+}
+
+.prompt-badge {
+  background-color: #868bc0;
 }
 
 /* es un input con fondo gris claro, redondeado elegante */
@@ -60,4 +77,41 @@ button {
   border-radius: 5px;
   padding: 5px;
   margin-right: 10px;
+}
+
+.template-item-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.template-item-list:hover {
+  background-color: #f1f1f1;
+}
+
+.play-button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.center-side-readonly {
+  display: none;
+  background-color: #f1f1f1;
+  width: 50%;
+  padding: 20px;
+}
+
+.readonlyprompt {
+  margin: 20px;
 }
