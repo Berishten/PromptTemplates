@@ -1,0 +1,63 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Contenedor principal */
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+/* Zona de la izquierda */
+.left-side {
+  background-color: lightgray;
+  width: 30%;
+  padding: 20px;
+}
+
+/* Formulario de la derecha */
+.right-side {
+  width: 70%;
+  padding: 20px;
+}
+
+/* Estilos para el botón */
+button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* es un span con fondo celeste claro, redondeado elegante */
+.label-badge {
+  background-color: #2434be;
+  color: white;
+  border-radius: 5px;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+/* es un input con fondo gris claro, redondeado elegante */
+.input-prompt {
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 5px;
+  margin-right: 10px;
+}
