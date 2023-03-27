@@ -1,5 +1,7 @@
 const prompt_block_name = "template-block-";
 const template_name = "template-";
+const ARGUMENT_BADGE_STYLE = "fs-5 badge text-bg-primary ms-2 me-2";
+const PROMPT_BADGE_STYLE = "fs-5 badge text-bg-secondary";
 
 let template = {
   id: "",
@@ -29,66 +31,23 @@ function loadMocks() {
       blocks: [
         {
           id: "template-block-0",
-          text: "This is a test",
-          type: "prompt",
-        },
-      ],
-      name: "Cuento",
-    },
-    {
-      id: "template-0",
-      blocks: [
-        {
-          id: "template-block-0",
-          text: "Desde",
+          text: "Escribe una expresion regular que cumpla las siguientes reglas:",
           type: "prompt",
         },
         {
           id: "template-block-1",
           type: "argument",
-        },
-        {
-          id: "template-block-2",
-          text: "hasta",
-          type: "prompt",
-        },
-        {
-          id: "template-block-3",
-          type: "argument",
+          text: "debe contener un numero, una letra mayuscula y minuscula, minimo 1 caracter especial y debe tener un largo de 10 caracteres",
         },
       ],
-      name: "Distancia",
-    },
-    {
-      id: "template-1",
-      blocks: [
-        {
-          id: "template-block-0",
-          text: "Redacta un cuento con los siguientes generos",
-          type: "prompt",
-        },
-        {
-          id: "template-block-1",
-          type: "argument",
-        },
-        {
-          id: "template-block-2",
-          text: "y firma al final como",
-          type: "prompt",
-        },
-        {
-          id: "template-block-3",
-          type: "argument",
-        },
-      ],
-      name: "Redactor de cuentos",
+      name: "Expresión regular",
     },
     {
       id: "template-2",
       blocks: [
         {
           id: "template-block-0",
-          text: "Toma esta tabla",
+          text: "Traduce esto:",
           type: "prompt",
         },
         {
@@ -97,24 +56,73 @@ function loadMocks() {
         },
         {
           id: "template-block-2",
-          text: "y genera un reporte de",
+          text: "a:",
           type: "prompt",
         },
         {
           id: "template-block-3",
           type: "argument",
         },
+      ],
+      name: "Traductor",
+    },
+    {
+      id: "template-1",
+      blocks: [
         {
-          id: "template-block-4",
-          text: "No agregar firma",
+          id: "template-block-0",
+          text: "Condensa esto:",
+          type: "prompt",
+        },
+        {
+          id: "template-block-1",
+          type: "argument",
+        },
+      ],
+      name: "Condensar texto",
+    },
+    {
+      id: "template-0",
+      blocks: [
+        {
+          id: "template-block-0",
+          text: "Genera una campaña publicitaria, como base:",
+          type: "prompt",
+        },
+        {
+          id: "template-block-1",
+          type: "argument",
+        },
+        {
+          id: "template-block-2",
+          text: ". En los lugares donde consideres que va el contenido audiovisual escribe [material audiovisual]",
           type: "prompt",
         },
       ],
-      name: "Generador de reportes",
+      name: "Marketer pro",
     },
   ];
 
   templates = mocks;
+}
+
+function newTemplate() {
+  //   hacer que el div con id "form" aparezca
+  document.getElementById("form").style.display = "block";
+  //   hacer que el div con id "readonlyform" desaparezca
+  document.getElementById("readonlyform").style.display = "none";
+  //   limpiar el div con id "readonlyprompt"
+  document.getElementById("readonlyprompt").innerHTML = "";
+  //   limpiar el div con id "prompts"
+  document.getElementById("prompts").innerHTML = "";
+  //   limpiar el input con id "template-name"
+  document.getElementById("template-name").value = "";
+  //   crear un nuevo template vacío
+  template = {
+    id: "",
+    blocks: [],
+    name: "",
+  };
 }
 
 function loadTemplate(id) {
@@ -129,7 +137,7 @@ function loadTemplate(id) {
   document.getElementById("template-name").value = temp.name;
 
   // create a title
-  var title = document.createElement("h1");
+  var title = document.createElement("h3");
   title.textContent = temp.name;
   div.appendChild(title);
   // agregar hr
@@ -146,16 +154,6 @@ function loadTemplate(id) {
   });
 
   template = temp;
-
-  //   var div = document.getElementById("prompts");
-  //   div.innerHTML = "";
-  //   temp.blocks.forEach((block) => {
-  //     if (block.type === "prompt") {
-  //       loadPromptBlock(block);
-  //     } else if (block.type === "argument") {
-  //       addArgumentElement();
-  //     }
-  //   });
 }
 
 function createReadBlock(block, type = "prompt") {
@@ -169,11 +167,11 @@ function createReadBlock(block, type = "prompt") {
       block.text = this.value;
     };
     blockElement.textContent = "Argumento";
-    blockElement.className = "badge argument-badge";
+    blockElement.className = "ms-2 me-2 fs-5 input-prompt";
   } else {
     blockElement = document.createElement("span");
     blockElement.textContent = block.text;
-    blockElement.className = "badge prompt-badge";
+    blockElement.className = PROMPT_BADGE_STYLE;
   }
   div.appendChild(blockElement);
 }
@@ -183,7 +181,7 @@ function loadPromptBlock(block) {
   var input = document.createElement("input");
   input.id = prompt_block_name + "" + template.blocks.length;
   input.placeholder = "Prompt";
-  input.className = "input-prompt";
+  input.className = "ms-2 me-2 fs-5 input-prompt";
   input.value = block.text;
   div.appendChild(input);
 }
@@ -213,7 +211,7 @@ function addArgumentElement() {
   var div = document.getElementById("prompts");
   var argument = document.createElement("span");
   argument.textContent = "Argumento";
-  argument.className = "badge argument-badge";
+  argument.className = ARGUMENT_BADGE_STYLE;
   div.appendChild(argument);
 }
 
@@ -240,6 +238,9 @@ function saveTemplate() {
   templates.push(template);
 
   console.log(template);
+
+  // cargar el template que se acaba de crear
+  loadTemplate(template.id);
 }
 
 function createTemplateListElement(template) {
@@ -253,6 +254,11 @@ function createTemplateListElement(template) {
 }
 
 function generate() {
+  // hacer que el div con id "generate-btn" desaparezca
+  document.getElementById("generate-btn").style.display = "none";
+  // hacer que el div con id "spiner" apareza
+  document.getElementById("spiner").style.display = "block";
+
   // variable que tiene el texto de cada uno de los bloques del template concatenados
   let text = "";
   // recorrer cada bloque del template
@@ -281,8 +287,13 @@ function generate() {
   fetch("http://localhost:3000/gpt", requestOptions)
     .then((response) => response.text())
     .then((result) => {
-      console.log(result);
       document.getElementById("output").innerText = JSON.parse(result).message;
     })
-    .catch((error) => console.log("error", error));
+    .catch((error) => console.log("error", error))
+    .finally(() => {
+      // hacer que el div con id "spiner" desaparezca
+      document.getElementById("spiner").style.display = "none";
+      // hacer que el div con id "generate-btn" aparezca
+      document.getElementById("generate-btn").style.display = "block";
+    });
 }
