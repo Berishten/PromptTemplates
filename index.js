@@ -25,6 +25,17 @@ function loadTemplateList() {
 function loadMocks() {
   mocks = [
     {
+      id: "template-3",
+      blocks: [
+        {
+          id: "template-block-0",
+          text: "This is a test",
+          type: "prompt",
+        },
+      ],
+      name: "Cuento",
+    },
+    {
       id: "template-0",
       blocks: [
         {
@@ -134,6 +145,8 @@ function loadTemplate(id) {
     }
   });
 
+  template = temp;
+
   //   var div = document.getElementById("prompts");
   //   div.innerHTML = "";
   //   temp.blocks.forEach((block) => {
@@ -150,6 +163,11 @@ function createReadBlock(block, type = "prompt") {
   var blockElement;
   if (type !== "prompt") {
     blockElement = document.createElement("input");
+    blockElement.id = block.id;
+    blockElement.placeholder = "Argumento";
+    blockElement.onchange = function () {
+      block.text = this.value;
+    };
     blockElement.textContent = "Argumento";
     blockElement.className = "badge argument-badge";
   } else {
@@ -195,7 +213,7 @@ function addArgumentElement() {
   var div = document.getElementById("prompts");
   var argument = document.createElement("span");
   argument.textContent = "Argumento";
-  argument.className = "label-badge";
+  argument.className = "badge argument-badge";
   div.appendChild(argument);
 }
 
@@ -234,17 +252,37 @@ function createTemplateListElement(template) {
   ul.appendChild(li);
 }
 
-// esta funcion toma un string y hace una peticion a "localhost:3000/gpt", cuando recibe la respuesta la imprime en el elemento con id "output"
-function generate(text) {
-  fetch("http://localhost:3000/gpt", {
+function generate() {
+  // variable que tiene el texto de cada uno de los bloques del template concatenados
+  let text = "";
+  // recorrer cada bloque del template
+  template.blocks.forEach((block) => {
+    text += block.text + " ";
+  });
+
+  // eliminar el ultimo espacio
+  text = text.substring(0, text.length - 1);
+
+  // hacer una peticion a "http://localhost:3000/gpt" con el texto concatenado el body {prompt: text} esperar la respuesta y mostrarla en el div con id "output"
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  var raw = JSON.stringify({
+    prompt: text,
+  });
+
+  var requestOptions = {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ text }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      document.getElementById("output").innerHTML = data.text;
-    });
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow",
+  };
+
+  fetch("http://localhost:3000/gpt", requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      console.log(result);
+      document.getElementById("output").innerText = JSON.parse(result).message;
+    })
+    .catch((error) => console.log("error", error));
 }
