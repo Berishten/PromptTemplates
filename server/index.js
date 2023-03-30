@@ -1,6 +1,6 @@
 (async () => {
   var openaiAPI = require("openai");
-  const OPENAI_API_KEY = "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";
+  const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
   const configuration = new openaiAPI.Configuration({
     organization: "org-QXysP29vlNgG7Qjf2AVA352G",

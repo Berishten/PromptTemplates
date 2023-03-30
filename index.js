@@ -81,48 +81,33 @@ function loadMocks() {
       ],
       name: "Condensar texto",
     },
-    {
-      id: "template-0",
-      blocks: [
-        {
-          id: "template-block-0",
-          text: "Genera una campaña publicitaria, como base:",
-          type: "prompt",
-        },
-        {
-          id: "template-block-1",
-          type: "argument",
-        },
-        {
-          id: "template-block-2",
-          text: ". En los lugares donde consideres que va el contenido audiovisual escribe [material audiovisual]",
-          type: "prompt",
-        },
-      ],
-      name: "Marketer pro",
-    },
   ];
 
   templates = mocks;
 }
 
 function newTemplate() {
-  //   hacer que el div con id "form" aparezca
-  document.getElementById("form").style.display = "block";
-  //   hacer que el div con id "readonlyform" desaparezca
-  document.getElementById("readonlyform").style.display = "none";
-  //   limpiar el div con id "readonlyprompt"
-  document.getElementById("readonlyprompt").innerHTML = "";
-  //   limpiar el div con id "prompts"
-  document.getElementById("prompts").innerHTML = "";
-  //   limpiar el input con id "template-name"
-  document.getElementById("template-name").value = "";
-  //   crear un nuevo template vacío
+  const form = document.getElementById("form");
+  form.style.display = "block";
+  const readonlyForm = document.getElementById("readonlyform");
+  readonlyForm.style.display = "none";
+  const readonlyPrompt = document.getElementById("readonlyprompt");
+  readonlyPrompt.innerHTML = "";
+  const prompts = document.getElementById("prompts");
+  prompts.innerHTML = "";
+  const templateName = document.getElementById("template-name");
+  templateName.value = "";
   template = {
     id: "",
     blocks: [],
     name: "",
   };
+}
+
+function showModal() {
+  const modal = document.getElementById('exampleModal');
+  const modalInstance = new bootstrap.Modal(modal);
+  modalInstance.show();
 }
 
 function loadTemplate(id) {

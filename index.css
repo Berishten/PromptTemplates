@@ -3,14 +3,11 @@ body {
   color: #ececf1;
 }
 
-/* Zona de la izquierda */
-.left-side {
+.left-side, .right-side {
   background-color: #212529;
 }
 
-/* Zona de la derecha */
 .right-side {
-  background-color: #212529;
   padding: 20px;
 }
 
