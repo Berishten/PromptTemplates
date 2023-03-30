@@ -31,4 +31,5 @@ Para crear un nuevo template, presione el botón **Nuevo template +** en la list
 
 <p align="center">
   <img src="./examples/build_a_prompt.png" alt="preview"/>
+  build_a_prompt.png
 </p>
