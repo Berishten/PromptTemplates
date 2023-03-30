@@ -3,7 +3,7 @@
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
   const configuration = new openaiAPI.Configuration({
-    organization: "org-QXysP29vlNgG7Qjf2AVA352G",
+    organization: process.env.ORGANIZATION_ID,
     apiKey: OPENAI_API_KEY,
   });
   const openai = new openaiAPI.OpenAIApi(configuration);
